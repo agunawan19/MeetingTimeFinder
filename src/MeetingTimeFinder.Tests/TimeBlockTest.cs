@@ -256,5 +256,97 @@ namespace MeetingTimeFinder.Tests
                     }
                 }
             };
+
+        [Theory]
+        [MemberData(nameof(IntersectWithData))]
+        public void IntersectWith_Returns_Correct_Result(ITimeBlock timeBlock1, ITimeBlock timeBlock2, bool expected)
+        {
+            var actual = timeBlock1.IntersecWith(timeBlock2);
+
+            Assert.Equal(expected, actual);
+        }
+
+        public static IEnumerable<object[]> IntersectWithData =>
+            new List<object[]>
+            {
+                new object[]
+                {
+                    new TimeBlock("08:00", "09:00"),
+                    new TimeBlock("09:00", "10:00"),
+                    false
+                },
+                new object[]
+                {
+                    new TimeBlock("10:00", "11:00"),
+                    new TimeBlock("09:00", "10:00"),
+                    false
+                },
+                new object[]
+                {
+                    new TimeBlock("01:00", "02:00"),
+                    new TimeBlock("09:00", "10:00"),
+                    false
+                },
+                new object[]
+                {
+                    new TimeBlock("09:00", "10:00"),
+                    new TimeBlock("01:00", "02:00"),
+                    false
+                },
+                new object[]
+                {
+                    new TimeBlock("09:00", "10:00"),
+                    new TimeBlock("09:00", "10:00"),
+                    true
+                },
+                new object[]
+                {
+                    new TimeBlock("08:00", "09:30"),
+                    new TimeBlock("09:00", "10:00"),
+                    true
+                },
+                new object[]
+                {
+                    new TimeBlock("10:00", "11:00"),
+                    new TimeBlock("09:00", "10:30"),
+                    true
+                },
+                new object[]
+                {
+                    new TimeBlock("08:00", "10:00"),
+                    new TimeBlock("07:00", "10:00"),
+                    true
+                },
+                new object[]
+                {
+                    new TimeBlock("08:00", "11:00"),
+                    new TimeBlock("07:00", "10:00"),
+                    true
+                },
+                new object[]
+                {
+                    new TimeBlock("06:00", "11:00"),
+                    new TimeBlock("07:00", "10:00"),
+                    true
+                },
+                new object[]
+                {
+                    new TimeBlock("08:00", "09:00"),
+                    new TimeBlock("07:00", "10:00"),
+                    true
+                },
+                new object[]
+                {
+                    new TimeBlock("08:00", "09:00"),
+                    new TimeBlock("08:00", "10:00"),
+                    true
+                },
+                new object[]
+                {
+                    new TimeBlock("08:00", "09:00"),
+                    new TimeBlock("07:00", "08:30"),
+                    true
+                },
+            };
     }
 }
