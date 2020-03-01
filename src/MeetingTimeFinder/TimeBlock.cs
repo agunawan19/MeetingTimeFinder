@@ -70,24 +70,24 @@ namespace MeetingTimeFinder
             return From == other.From && To == other.To;
         }
 
-        public static bool operator ==(TimeBlock timeBlock1, TimeBlock timeBlock2)
+        public static bool operator ==(TimeBlock operand1, TimeBlock operand2)
         {
-            if (((object)timeBlock1) == null || ((object)timeBlock2) == null)
+            if (((object)operand1) == null || ((object)operand2) == null)
             {
-                return Object.Equals(timeBlock1, timeBlock2);
+                return Object.Equals(operand1, operand2);
             }
 
-            return timeBlock1.Equals(timeBlock2);
+            return operand1.Equals(operand2);
         }
 
-        public static bool operator !=(TimeBlock timeBlock1, TimeBlock timeBlock2)
+        public static bool operator !=(TimeBlock operand1, TimeBlock operand2)
         {
-            if (((object)timeBlock1) == null || ((object)timeBlock2) == null)
+            if (((object)operand1) == null || ((object)operand2) == null)
             {
-                return !Object.Equals(timeBlock1, timeBlock2);
+                return !Object.Equals(operand1, operand2);
             }
 
-            return !(timeBlock1.Equals(timeBlock2));
+            return !(operand1.Equals(operand2));
         }
 
         public static bool operator >=(TimeBlock timeBlock1, TimeBlock timeBlock2)
@@ -132,12 +132,49 @@ namespace MeetingTimeFinder
 
         public int CompareTo(object obj)
         {
-            throw new NotImplementedException();
+            if (obj == null) return 1;
+
+            TimeBlock other = obj as TimeBlock;
+
+            if (other != null)
+            {
+                if (From != other.From || To != other.To)
+                {
+                    if (From <= other.From)
+                    {
+                        return -1;
+                    }
+                    else
+                    {
+                        return 1;
+                    }
+                }
+
+                return 0;
+            }
+            else
+            {
+                throw new ArgumentException("Object is not a TimeBlock");
+            }
         }
 
         public int CompareTo(ITimeBlock other)
         {
-            throw new NotImplementedException();
+            if (other == null) return 1;
+
+            if (From != other.From || To != other.To)
+            {
+                if (From <= other.From)
+                {
+                    return -1;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+
+            return 0;
         }
     }
 }
