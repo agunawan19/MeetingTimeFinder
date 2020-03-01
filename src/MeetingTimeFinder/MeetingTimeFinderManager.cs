@@ -38,11 +38,11 @@ namespace MeetingTimeFinder
             return possibleMeetingTimes;
         }
 
-        private ITimeBlock GetIntersectedTimeBlock(ITimeBlock reference, ITimeBlock difference) =>
+        private ITimeBlock GetIntersectedTimeBlock(ITimeBlock reference, ITimeBlock other) =>
             new TimeBlock
             {
-                From = reference.From.CompareTo(difference.From) == -1 ? difference.From : reference.From,
-                To = reference.To.CompareTo(difference.To) == -1 ? reference.To : difference.To
+                From = reference.From.CompareTo(other.From) == -1 ? other.From : reference.From,
+                To = reference.To.CompareTo(other.To) == -1 ? reference.To : other.To
             };
 
         public IEnumerable<ITimeBlock> GetOpenTimeBlocks(PersonDailyCalendar personDailyCalendar)
