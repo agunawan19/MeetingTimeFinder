@@ -15,7 +15,7 @@ namespace MeetingTimeFinder.Tests
         }
 
         [Theory]
-        [MemberData(nameof(GetOpenTimeBlockData), parameters: new object[] { 0, 3 })]
+        [MemberData(nameof(GetOpenTimeBlockData))]
         public void GetOpenTimeBlocks_Returns_Schedule_Time(
             string name,
             DateTime scheduleFrom,
@@ -37,8 +37,7 @@ namespace MeetingTimeFinder.Tests
             Assert.Equal(expected, actual);
         }
 
-        public static IEnumerable<object[]> GetOpenTimeBlockData(
-            int numSkips, int numTests)
+        public static IEnumerable<object[]> GetOpenTimeBlockData()
         {
             const string timeFormat = "HH:mm";
 
@@ -53,6 +52,33 @@ namespace MeetingTimeFinder.Tests
                     new List<ITimeBlock>
                     {
                         new TimeBlock("07:00", "16:00")
+                    }
+                },
+                new object[]
+                {
+                    "Person Y",
+                    DateTime.ParseExact("07:00", timeFormat, null),
+                    DateTime.ParseExact("16:00", timeFormat, null),
+                    new List<ITimeBlock>
+                    {
+                        new TimeBlock("07:00", "13:45"),
+                        new TimeBlock("14:00", "16:00"),
+                    },
+                    new List<ITimeBlock>()
+                },
+                new object[]
+                {
+                    "Person Z",
+                    DateTime.ParseExact("07:00", timeFormat, null),
+                    DateTime.ParseExact("16:00", timeFormat, null),
+                    new List<ITimeBlock>
+                    {
+                        new TimeBlock("07:00", "13:45"),
+                        new TimeBlock("14:00", "15:30"),
+                    },
+                    new List<ITimeBlock>
+                    {
+                        new TimeBlock("15:30", "16:00"),
                     }
                 },
                 new object[]
@@ -94,7 +120,7 @@ namespace MeetingTimeFinder.Tests
                 }
             };
 
-            return allData.Skip(numSkips).Take(numTests);
+            return allData;
         }
     }
 }
