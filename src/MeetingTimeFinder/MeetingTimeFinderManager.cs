@@ -16,7 +16,7 @@ namespace MeetingTimeFinder
         public MeetingTimeFinderManager(IList<PersonDailyCalendar> personDailyCalendars) =>
             PersonDailyCalendars = personDailyCalendars;
 
-        public IList<ITimeBlock> FindPossibleMeetingTime()
+        public IEnumerable<ITimeBlock> FindPossibleMeetingTime()
         {
             var possibleMeetingTimes = new List<ITimeBlock>();
             var openTimeBlocks = PersonDailyCalendars
@@ -93,9 +93,7 @@ namespace MeetingTimeFinder
             IList<ITimeBlock> openTimeBlocks,
             ITimeBlock openTimeBlock)
         {
-            var hasEnoughTime = HasEnoughTime(openTimeBlock);
-
-            if (hasEnoughTime)
+            if (HasEnoughTime(openTimeBlock))
             {
                 openTimeBlocks.Add(openTimeBlock);
             }

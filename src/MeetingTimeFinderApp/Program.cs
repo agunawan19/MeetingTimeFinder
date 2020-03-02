@@ -20,8 +20,11 @@ namespace MeetingTimeFinderApp
             var meetingTimeFinderManager = new MeetingTimeFinderManager(personDailyCalendars);
             meetingTimeFinderManager.MeetingTimeToBeResolvedInMinutes = int.Parse(args[0]);
             var result = meetingTimeFinderManager.FindPossibleMeetingTime();
-            result.ToList().ForEach(
-                t => Console.WriteLine($"{t.From.ToString("HH:mm")} - {t.To.ToString("HH:mm")}"));
+
+            foreach (var t in result)
+            {
+                Console.WriteLine($"{t.From.ToString("HH:mm")} - {t.To.ToString("HH:mm")}");
+            }
 
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
