@@ -9,9 +9,16 @@ namespace MeetingTimeFinderApp
     {
         static void Main(string[] args)
         {
+            if (args.Length == 0)
+            {
+                Console.WriteLine("Please enter a numeric argument.");
+                Console.WriteLine("Usage: MeetingTimeFinderApp <num>");
+                return;
+            }
+
             var personDailyCalendars = GeneratePersonDailyCalendar();
             var meetingTimeFinderManager = new MeetingTimeFinderManager(personDailyCalendars);
-            meetingTimeFinderManager.MeetingTimeToBeResolvedInMinutes = 60;
+            meetingTimeFinderManager.MeetingTimeToBeResolvedInMinutes = int.Parse(args[0]);
             var result = meetingTimeFinderManager.FindPossibleMeetingTime();
             result.ToList().ForEach(
                 t => Console.WriteLine($"{t.From.ToString("HH:mm")} - {t.To.ToString("HH:mm")}"));

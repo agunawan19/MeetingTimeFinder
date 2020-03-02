@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/src/MeetingTimeFinderApp/bin/Debug/netcoreapp3.1/MeetingTimeFinderApp.dll",
-            "args": [],
+            "args": ["30"],
             "cwd": "${workspaceFolder}/src/MeetingTimeFinderApp",
             "console": "internalConsole",
             "stopAtEntry": false
