@@ -37,18 +37,27 @@ namespace MeetingTimeFinder.Tests
 
         [Theory]
         [MemberData(nameof(EqualTimeBlockData))]
-        public void Equal_Operator_Returns_Correct_Boolean(TimeBlock firstTimeBlock, TimeBlock secondTimeBlock, bool expected)
+        public void Equal_Operator_Returns_Correct_Boolean(TimeBlock timeBlock1, TimeBlock timeBlock2, bool expected)
         {
-            var actual = firstTimeBlock == secondTimeBlock;
+            var actual = timeBlock1 == timeBlock2;
 
             Assert.Equal(expected, actual);
         }
 
         [Theory]
         [MemberData(nameof(EqualTimeBlockData))]
-        public void Equal_Method_Returns_Correct_Boolean(TimeBlock firstTimeBlock, TimeBlock secondTimeBlock, bool expected)
+        public void Equal_Method_Returns_Correct_Boolean(TimeBlock timeBlock1, TimeBlock timeBlock2, bool expected)
         {
-            var actual = firstTimeBlock.Equals(secondTimeBlock);
+            var actual = timeBlock1.Equals(timeBlock2);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [MemberData(nameof(EqualTimeBlockData))]
+        public void Equal_Object_Method_Returns_Correct_Boolean(object timeBlock1, object timeBlock2, bool expected)
+        {
+            var actual = timeBlock1.Equals(timeBlock2);
 
             Assert.Equal(expected, actual);
         }
@@ -68,13 +77,25 @@ namespace MeetingTimeFinder.Tests
                     new TimeBlock("09:00", "18:00"),
                     false,
                 },
+                new object[]
+                {
+                    new TimeBlock("08:00", "17:00"),
+                    new TimeBlock("17:00", "18:00"),
+                    false,
+                },
+                new object[]
+                {
+                    new TimeBlock("08:00", "17:00"),
+                    null,
+                    false,
+                },
             };
 
         [Theory]
         [MemberData(nameof(NotEqualTimeBlockData))]
-        public void Not_Equal_Operator_Returns_Correct_Boolean(TimeBlock firstTimeBlock, TimeBlock secondTimeBlock, bool expected)
+        public void Not_Equal_Operator_Returns_Correct_Boolean(TimeBlock timeBlock1, TimeBlock timeBlock2, bool expected)
         {
-            var actual = firstTimeBlock != secondTimeBlock;
+            var actual = timeBlock1 != timeBlock2;
 
             Assert.Equal(expected, actual);
         }
@@ -94,22 +115,28 @@ namespace MeetingTimeFinder.Tests
                     new TimeBlock("09:00", "18:00"),
                     true,
                 },
+                new object[]
+                {
+                    new TimeBlock("08:00", "17:00"),
+                    null,
+                    true,
+                },
             };
 
         [Theory]
-        [MemberData(nameof(GreaterOrEqualThanTimeBlockData), parameters: new object[] { 0, 5 })]
-        public void GreaterOrEqualThan_Operator_Returns_Correct_Boolean(TimeBlock firstTimeBlock, TimeBlock secondTimeBlock, bool expected)
+        [MemberData(nameof(GreaterOrEqualThanTimeBlockData), parameters: new object[] { 0, 7 })]
+        public void GreaterOrEqualThan_Operator_Returns_Correct_Boolean(TimeBlock timeBlock1, TimeBlock timeBlock2, bool expected)
         {
-            var actual = firstTimeBlock >= secondTimeBlock;
+            var actual = timeBlock1 >= timeBlock2;
 
             Assert.Equal(expected, actual);
         }
 
         [Theory]
-        [MemberData(nameof(GreaterOrEqualThanTimeBlockData), parameters: new object[] { 1, 4 })]
-        public void GreaterThan_Operator_Returns_Correct_Boolean(TimeBlock firstTimeBlock, TimeBlock secondTimeBlock, bool expected)
+        [MemberData(nameof(GreaterOrEqualThanTimeBlockData), parameters: new object[] { 1, 6 })]
+        public void GreaterThan_Operator_Returns_Correct_Boolean(TimeBlock timeBlock1, TimeBlock timeBlock2, bool expected)
         {
-            var actual = firstTimeBlock > secondTimeBlock;
+            var actual = timeBlock1 > timeBlock2;
 
             Assert.Equal(expected, actual);
         }
@@ -148,7 +175,19 @@ namespace MeetingTimeFinder.Tests
                     new TimeBlock("07:00", "18:00"),
                     new TimeBlock("08:00", "17:00"),
                     false,
-                }
+                },
+                new object[]
+                {
+                    new TimeBlock("07:00", "18:00"),
+                    null,
+                    false,
+                },
+                new object[]
+                {
+                    null,
+                    new TimeBlock("07:00", "18:00"),
+                    false,
+                },
             };
 
             return allData.Skip(numSkips).Take(numTests);
@@ -156,24 +195,25 @@ namespace MeetingTimeFinder.Tests
 
         [Theory]
         [MemberData(nameof(LessOrEqualThanTimeBlockData), parameters: new object[] { 0, 5 })]
-        public void LessOrEqualThan_Operator_Returns_Correct_Boolean(TimeBlock firstTimeBlock, TimeBlock secondTimeBlock, bool expected)
+        public void LessOrEqualThan_Operator_Returns_Correct_Boolean(TimeBlock timeBlock1, TimeBlock timeBlock2, bool expected)
         {
-            var actual = firstTimeBlock <= secondTimeBlock;
+            var actual = timeBlock1 <= timeBlock2;
 
             Assert.Equal(expected, actual);
         }
 
         [Theory]
         [MemberData(nameof(LessOrEqualThanTimeBlockData), parameters: new object[] { 1, 4 })]
-        public void LessThan_Operator_Returns_Correct_Boolean(TimeBlock firstTimeBlock, TimeBlock secondTimeBlock, bool expected)
+        public void LessThan_Operator_Returns_Correct_Boolean(TimeBlock timeBlock1, TimeBlock timeBlock2, bool expected)
         {
-            var actual = firstTimeBlock < secondTimeBlock;
+            var actual = timeBlock1 < timeBlock2;
 
             Assert.Equal(expected, actual);
         }
 
         public static IEnumerable<object[]> LessOrEqualThanTimeBlockData(
-            int numSkips, int numTests)
+            int numSkips,
+            int numTests)
         {
             var allData = new List<object[]>
             {
@@ -231,10 +271,12 @@ namespace MeetingTimeFinder.Tests
 
         [Theory]
         [MemberData(nameof(CompareToListSortBlockData))]
-        public void CompareTo_List_Sort_Test_Returns_Correct_Result(IList<TimeBlock> list)
+        public void CompareTo_List_Sort_Test_Returns_Correct_Result(
+            List<TimeBlock> actual,
+            List<TimeBlock> expected)
         {
-            var myList = list.ToList();
-            myList.Sort();
+            actual.Sort();
+            Assert.Equal(expected, actual);
         }
 
         public static IEnumerable<object[]> CompareToListSortBlockData =>
@@ -253,100 +295,48 @@ namespace MeetingTimeFinder.Tests
                         new TimeBlock("10:00", "20:00"),
                         new TimeBlock("09:00", "10:00"),
                         new TimeBlock("09:00", "20:00"),
-                    }
-                }
+                    },
+                    new List<TimeBlock>
+                    {
+                        new TimeBlock("01:00", "09:00"),
+                        new TimeBlock("02:00", "22:00"),
+                        new TimeBlock("03:00", "20:00"),
+                        new TimeBlock("09:00", "10:00"),
+                        new TimeBlock("09:00", "20:00"),
+                        new TimeBlock("09:00", "20:00"),
+                        new TimeBlock("10:00", "20:00"),
+                        new TimeBlock("10:00", "21:00"),
+                        new TimeBlock("20:00", "23:00"),
+                        new TimeBlock("21:00", "23:00"),
+                    },
+                },
             };
 
         [Theory]
-        [MemberData(nameof(IntersectWithData))]
-        public void IntersectWith_Returns_Correct_Result(ITimeBlock timeBlock1, ITimeBlock timeBlock2, bool expected)
+        [InlineData(new[] { "06:00", "07:00" }, new[] { "08:00", "09:00" }, false )]
+        [InlineData(new[] { "07:00", "08:00" }, new[] { "08:00", "09:00" }, false )]
+        [InlineData(new[] { "07:00", "09:00" }, new[] { "08:00", "20:00" }, true )]
+        [InlineData(new[] { "07:00", "20:00" }, new[] { "08:00", "20:00" }, true )]
+        [InlineData(new[] { "07:00", "21:00" }, new[] { "08:00", "20:00" }, true )]
+        [InlineData(new[] { "08:00", "09:00" }, new[] { "08:00", "20:00" }, true )]
+        [InlineData(new[] { "08:00", "20:00" }, new[] { "08:00", "20:00" }, true )]
+        [InlineData(new[] { "08:00", "21:00" }, new[] { "08:00", "20:00" }, true )]
+        [InlineData(new[] { "09:00", "10:00" }, new[] { "08:00", "20:00" }, true )]
+        [InlineData(new[] { "09:00", "20:00" }, new[] { "08:00", "20:00" }, true )]
+        [InlineData(new[] { "09:00", "21:00" }, new[] { "08:00", "20:00" }, true )]
+        [InlineData(new[] { "20:00", "21:00" }, new[] { "08:00", "20:00" }, false )]
+        [InlineData(new[] { "21:00", "22:00" }, new[] { "08:00", "20:00" }, false )]
+        public void IntersectWith_Returns_Correct_Result(
+            IList<string> fromToPair1,
+            IList<string> fromToPair2,
+            bool expected)
         {
-            var actual = timeBlock1.IntersecWith(timeBlock2);
+            const byte from = 0;
+            const byte to = 1;
+            var actual = new TimeBlock(fromToPair1[from], fromToPair1[to])
+                .IntersecWith(new TimeBlock(fromToPair2[from], fromToPair2[to]));
 
             Assert.Equal(expected, actual);
         }
-
-        public static IEnumerable<object[]> IntersectWithData =>
-            new List<object[]>
-            {
-                new object[]
-                {
-                    new TimeBlock("08:00", "09:00"),
-                    new TimeBlock("09:00", "10:00"),
-                    false
-                },
-                new object[]
-                {
-                    new TimeBlock("10:00", "11:00"),
-                    new TimeBlock("09:00", "10:00"),
-                    false
-                },
-                new object[]
-                {
-                    new TimeBlock("01:00", "02:00"),
-                    new TimeBlock("09:00", "10:00"),
-                    false
-                },
-                new object[]
-                {
-                    new TimeBlock("09:00", "10:00"),
-                    new TimeBlock("01:00", "02:00"),
-                    false
-                },
-                new object[]
-                {
-                    new TimeBlock("09:00", "10:00"),
-                    new TimeBlock("09:00", "10:00"),
-                    true
-                },
-                new object[]
-                {
-                    new TimeBlock("08:00", "09:30"),
-                    new TimeBlock("09:00", "10:00"),
-                    true
-                },
-                new object[]
-                {
-                    new TimeBlock("10:00", "11:00"),
-                    new TimeBlock("09:00", "10:30"),
-                    true
-                },
-                new object[]
-                {
-                    new TimeBlock("08:00", "10:00"),
-                    new TimeBlock("07:00", "10:00"),
-                    true
-                },
-                new object[]
-                {
-                    new TimeBlock("08:00", "11:00"),
-                    new TimeBlock("07:00", "10:00"),
-                    true
-                },
-                new object[]
-                {
-                    new TimeBlock("06:00", "11:00"),
-                    new TimeBlock("07:00", "10:00"),
-                    true
-                },
-                new object[]
-                {
-                    new TimeBlock("08:00", "09:00"),
-                    new TimeBlock("07:00", "10:00"),
-                    true
-                },
-                new object[]
-                {
-                    new TimeBlock("08:00", "09:00"),
-                    new TimeBlock("08:00", "10:00"),
-                    true
-                },
-                new object[]
-                {
-                    new TimeBlock("08:00", "09:00"),
-                    new TimeBlock("07:00", "08:30"),
-                    true
-                },
-            };
     }
 }

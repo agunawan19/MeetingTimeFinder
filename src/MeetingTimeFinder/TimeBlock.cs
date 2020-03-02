@@ -49,14 +49,14 @@ namespace MeetingTimeFinder
                 return false;
             }
 
-            TimeBlock timeBlockObj = obj as TimeBlock;
-            if (timeBlockObj == null)
+            TimeBlock timeBlock = obj as TimeBlock;
+            if (timeBlock == null)
             {
                 return false;
             }
             else
             {
-                return Equals(timeBlockObj);
+                return Equals(timeBlock);
             }
         }
 
@@ -72,7 +72,7 @@ namespace MeetingTimeFinder
 
         public static bool operator ==(TimeBlock operand1, TimeBlock operand2)
         {
-            if (((object)operand1) == null || ((object)operand2) == null)
+            if (operand1 as object == null || operand2 as object == null)
             {
                 return Object.Equals(operand1, operand2);
             }
@@ -82,17 +82,17 @@ namespace MeetingTimeFinder
 
         public static bool operator !=(TimeBlock operand1, TimeBlock operand2)
         {
-            if (((object)operand1) == null || ((object)operand2) == null)
+            if (operand1 as object == null || operand2 as object == null)
             {
                 return !Object.Equals(operand1, operand2);
             }
 
-            return !(operand1.Equals(operand2));
+            return !operand1.Equals(operand2);
         }
 
         public static bool operator >=(TimeBlock timeBlock1, TimeBlock timeBlock2)
         {
-            if (((object)timeBlock1) == null || ((object)timeBlock2) == null)
+            if (timeBlock1 as object == null || timeBlock2 as object == null)
             {
                 return Object.Equals(timeBlock1, timeBlock2);
             }
@@ -102,7 +102,7 @@ namespace MeetingTimeFinder
 
         public static bool operator <=(TimeBlock timeBlock1, TimeBlock timeBlock2)
         {
-            if (((object)timeBlock1) == null || ((object)timeBlock2) == null)
+            if (timeBlock1 as object == null || timeBlock2 as object == null)
             {
                 return Object.Equals(timeBlock1, timeBlock2);
             }
@@ -112,7 +112,7 @@ namespace MeetingTimeFinder
 
         public static bool operator >(TimeBlock timeBlock1, TimeBlock timeBlock2)
         {
-            if (((object)timeBlock1) == null || ((object)timeBlock2) == null)
+            if (timeBlock1 as object == null || timeBlock2 as object == null)
             {
                 return Object.Equals(timeBlock1, timeBlock2);
             }
@@ -122,7 +122,7 @@ namespace MeetingTimeFinder
 
         public static bool operator <(TimeBlock timeBlock1, TimeBlock timeBlock2)
         {
-            if (((object)timeBlock1) == null || ((object)timeBlock2) == null)
+            if (timeBlock1 as object == null || timeBlock2 as object == null)
             {
                 return Object.Equals(timeBlock1, timeBlock2);
             }
