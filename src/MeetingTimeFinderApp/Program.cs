@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MeetingTimeFinder;
+using System.Linq;
 
 namespace MeetingTimeFinderApp
 {
@@ -10,7 +11,10 @@ namespace MeetingTimeFinderApp
         {
             var personDailyCalendars = GeneratePersonDailyCalendar();
             var meetingTimeFinderManager = new MeetingTimeFinderManager(personDailyCalendars);
-            meetingTimeFinderManager.FindPossibleMeetingTime();
+            meetingTimeFinderManager.MeetingTimeToBeResolvedInMinutes = 60;
+            var result = meetingTimeFinderManager.FindPossibleMeetingTime();
+            result.ToList().ForEach(
+                t => Console.WriteLine($"{t.From.ToString("HH:mm")} - {t.To.ToString("HH:mm")}"));
 
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
@@ -27,15 +31,9 @@ namespace MeetingTimeFinderApp
                 {
                     CalendarEvents = new List<ITimeBlock>
                     {
-                        new TimeBlock(
-                            new DateTime(2020, 3, 1, 9, 15, 0),
-                            new DateTime(2020, 3, 1, 10, 30, 0)),
-                        new TimeBlock(
-                            new DateTime(2020, 3, 1, 12, 0, 0),
-                            new DateTime(2020, 3, 1, 13, 0, 0)),
-                        new TimeBlock(
-                            new DateTime(2020, 3, 1, 16, 0, 0),
-                            new DateTime(2020, 3, 1, 18, 0, 0)),
+                        new TimeBlock("09:15", "10:30"),
+                        new TimeBlock("12:00", "13:00"),
+                        new TimeBlock("16:00", "18:00"),
                     }
                 },
                 new PersonDailyCalendar(
@@ -45,18 +43,10 @@ namespace MeetingTimeFinderApp
                 {
                     CalendarEvents = new List<ITimeBlock>
                     {
-                        new TimeBlock(
-                            new DateTime(2020, 3, 1, 10, 0, 0),
-                            new DateTime(2020, 3, 1, 11, 30, 0)),
-                        new TimeBlock(
-                            new DateTime(2020, 3, 1, 12, 30, 0),
-                            new DateTime(2020, 3, 1, 14, 30, 0)),
-                        new TimeBlock(
-                            new DateTime(2020, 3, 1, 14, 30, 0),
-                            new DateTime(2020, 3, 1, 15, 0, 0)),
-                        new TimeBlock(
-                            new DateTime(2020, 3, 1, 16, 0, 0),
-                            new DateTime(2020, 3, 1, 17, 0, 0)),
+                        new TimeBlock("10:00", "11:30"),
+                        new TimeBlock("12:30", "14:30"),
+                        new TimeBlock("14:30", "15:00"),
+                        new TimeBlock("16:00", "17:00"),
                     }
                 }
             };

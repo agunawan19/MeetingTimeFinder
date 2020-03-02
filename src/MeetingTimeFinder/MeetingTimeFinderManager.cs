@@ -30,7 +30,12 @@ namespace MeetingTimeFinder
                 {
                     if (openTimeBlock1.IntersecWith(openTimeBlock2))
                     {
-                        possibleMeetingTimes.Add(GetIntersectedTimeBlock(openTimeBlock1, openTimeBlock2));
+                        var intersectedTimeBlock = GetIntersectedTimeBlock(openTimeBlock1, openTimeBlock2);
+
+                        if (HasEnoughTime(intersectedTimeBlock))
+                        {
+                            possibleMeetingTimes.Add(intersectedTimeBlock);
+                        }
                     }
                 }
             }
@@ -88,12 +93,15 @@ namespace MeetingTimeFinder
             IList<ITimeBlock> openTimeBlocks,
             ITimeBlock openTimeBlock)
         {
-            var hasEnoughTime = openTimeBlock.From.AddMinutes(MeetingTimeToBeResolvedInMinutes) <= openTimeBlock.To;
+            var hasEnoughTime = HasEnoughTime(openTimeBlock);
 
             if (hasEnoughTime)
             {
                 openTimeBlocks.Add(openTimeBlock);
             }
         }
+
+        private bool HasEnoughTime(ITimeBlock openTimeBlock) =>
+            openTimeBlock.From.AddMinutes(MeetingTimeToBeResolvedInMinutes) <= openTimeBlock.To;
     }
 }
