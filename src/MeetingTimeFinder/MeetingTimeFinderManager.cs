@@ -53,35 +53,35 @@ namespace MeetingTimeFinder
         public IEnumerable<ITimeBlock> GetOpenTimeBlocks(PersonDailyCalendar personDailyCalendar)
         {
             var openTimeBlocks = new List<ITimeBlock>();
-            var calendarEvents = personDailyCalendar.CalendarEvents.GetEnumerator();
             var dailySchedule = personDailyCalendar.Schedule;
-            ITimeBlock currentDailyEvent = null;
-            ITimeBlock previousDailyEvent = null;
+            ITimeBlock currentEvent = null;
+            ITimeBlock previousEvent = null;
             ITimeBlock openTimeBlock = null;
 
-            while (calendarEvents.MoveNext())
+            foreach (var calendarEvents in personDailyCalendar.CalendarEvents)
             {
-                currentDailyEvent = calendarEvents.Current;
+                currentEvent = calendarEvents;
+
                 var isEventFromStartedAfterScheduleFrom =
-                    currentDailyEvent.From.CompareTo(dailySchedule.From) == 1;
+                    currentEvent.From.CompareTo(dailySchedule.From) == 1;
 
                 if (isEventFromStartedAfterScheduleFrom)
                 {
-                    var timeStartingPoint = previousDailyEvent?.To ?? dailySchedule.From;
+                    var timeStartingPoint = previousEvent?.To ?? dailySchedule.From;
                     openTimeBlock = new TimeBlock
                     {
                         From = timeStartingPoint,
-                        To = timeStartingPoint + currentDailyEvent.From.Subtract(timeStartingPoint)
+                        To = timeStartingPoint + currentEvent.From.Subtract(timeStartingPoint)
                     };
                     AddToList(openTimeBlocks, openTimeBlock);
                 }
 
-                previousDailyEvent = currentDailyEvent;
+                previousEvent = currentEvent;
             }
 
             openTimeBlock = new TimeBlock
             {
-                From = currentDailyEvent?.To ?? dailySchedule.From,
+                From = currentEvent?.To ?? dailySchedule.From,
                 To = dailySchedule.To
             };
             AddToList(openTimeBlocks, openTimeBlock);
