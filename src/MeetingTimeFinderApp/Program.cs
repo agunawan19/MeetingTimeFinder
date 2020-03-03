@@ -39,11 +39,11 @@ namespace MeetingTimeFinderApp
                     new DateTime(2020, 3, 1, 9, 0, 0),
                     new DateTime(2020, 3, 1, 20, 0, 0))
                 {
-                    CalendarEvents = new List<ITimeBlock>
+                    CalendarEvents = new List<ITimeFrame>
                     {
-                        new TimeBlock("09:15", "10:30"),
-                        new TimeBlock("12:00", "13:00"),
-                        new TimeBlock("16:00", "18:00"),
+                        new TimeFrame("09:15", "10:30"),
+                        new TimeFrame("12:00", "13:00"),
+                        new TimeFrame("16:00", "18:00"),
                     }
                 },
                 new PersonDailyCalendar(
@@ -51,12 +51,12 @@ namespace MeetingTimeFinderApp
                     new DateTime(2020, 3, 1, 10, 0, 0),
                     new DateTime(2020, 3, 1, 18, 30, 0))
                 {
-                    CalendarEvents = new List<ITimeBlock>
+                    CalendarEvents = new List<ITimeFrame>
                     {
-                        new TimeBlock("10:00", "11:30"),
-                        new TimeBlock("12:30", "14:30"),
-                        new TimeBlock("14:30", "15:00"),
-                        new TimeBlock("16:00", "17:00"),
+                        new TimeFrame("10:00", "11:30"),
+                        new TimeFrame("12:30", "14:30"),
+                        new TimeFrame("14:30", "15:00"),
+                        new TimeFrame("16:00", "17:00"),
                     }
                 }
             };

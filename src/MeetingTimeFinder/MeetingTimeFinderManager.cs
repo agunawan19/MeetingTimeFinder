@@ -16,25 +16,25 @@ namespace MeetingTimeFinder
         public MeetingTimeFinderManager(IList<PersonDailyCalendar> personDailyCalendars) =>
             PersonDailyCalendars = personDailyCalendars;
 
-        public IEnumerable<ITimeBlock> FindPossibleMeetingTime()
+        public IEnumerable<ITimeFrame> FindPossibleMeetingTime()
         {
-            var possibleMeetingTimes = new List<ITimeBlock>();
-            var openTimeBlocks = PersonDailyCalendars
-                .Select(personDailyCalendar => GetOpenTimeBlocks(personDailyCalendar).ToList()).ToList();
-            var openTimeBlocks1 = openTimeBlocks[0];
-            var openTimeBlocks2 = openTimeBlocks[1];
+            var possibleMeetingTimes = new List<ITimeFrame>();
+            var openTimeFrames = PersonDailyCalendars
+                .Select(personDailyCalendar => GetOpenTimeFrames(personDailyCalendar).ToList()).ToList();
+            var openTimeFrames1 = openTimeFrames[0];
+            var openTimeFrames2 = openTimeFrames[1];
 
-            foreach (var openTimeBlock1 in openTimeBlocks1)
+            foreach (var openTimeFrame1 in openTimeFrames1)
             {
-                foreach (var openTimeBlock2 in openTimeBlocks2)
+                foreach (var openTimeFrame2 in openTimeFrames2)
                 {
-                    if (openTimeBlock1.IntersecWith(openTimeBlock2))
+                    if (openTimeFrame1.IntersecWith(openTimeFrame2))
                     {
-                        var intersectedTimeBlock = GetIntersectedTimeBlock(openTimeBlock1, openTimeBlock2);
+                        var intersectedTimeFrame = GetIntersectedTimeFrame(openTimeFrame1, openTimeFrame2);
 
-                        if (HasEnoughTime(intersectedTimeBlock))
+                        if (HasEnoughTime(intersectedTimeFrame))
                         {
-                            possibleMeetingTimes.Add(intersectedTimeBlock);
+                            possibleMeetingTimes.Add(intersectedTimeFrame);
                         }
                     }
                 }
@@ -43,20 +43,20 @@ namespace MeetingTimeFinder
             return possibleMeetingTimes;
         }
 
-        private ITimeBlock GetIntersectedTimeBlock(ITimeBlock reference, ITimeBlock other) =>
-            new TimeBlock
+        private ITimeFrame GetIntersectedTimeFrame(ITimeFrame reference, ITimeFrame other) =>
+            new TimeFrame
             {
                 From = reference.From.CompareTo(other.From) == -1 ? other.From : reference.From,
                 To = reference.To.CompareTo(other.To) == -1 ? reference.To : other.To
             };
 
-        public IEnumerable<ITimeBlock> GetOpenTimeBlocks(PersonDailyCalendar personDailyCalendar)
+        public IEnumerable<ITimeFrame> GetOpenTimeFrames(PersonDailyCalendar personDailyCalendar)
         {
-            var openTimeBlocks = new List<ITimeBlock>();
+            var openTimeFrames = new List<ITimeFrame>();
             var dailySchedule = personDailyCalendar.Schedule;
-            ITimeBlock currentEvent = null;
-            ITimeBlock previousEvent = null;
-            ITimeBlock openTimeBlock = null;
+            ITimeFrame currentEvent = null;
+            ITimeFrame previousEvent = null;
+            ITimeFrame openTimeFrame = null;
 
             foreach (var calendarEvents in personDailyCalendar.CalendarEvents)
             {
@@ -68,38 +68,38 @@ namespace MeetingTimeFinder
                 if (isEventFromStartedAfterScheduleFrom)
                 {
                     var timeStartingPoint = previousEvent?.To ?? dailySchedule.From;
-                    openTimeBlock = new TimeBlock
+                    openTimeFrame = new TimeFrame
                     {
                         From = timeStartingPoint,
                         To = timeStartingPoint + currentEvent.From.Subtract(timeStartingPoint)
                     };
-                    AddToList(openTimeBlocks, openTimeBlock);
+                    AddToList(openTimeFrames, openTimeFrame);
                 }
 
                 previousEvent = currentEvent;
             }
 
-            openTimeBlock = new TimeBlock
+            openTimeFrame = new TimeFrame
             {
                 From = currentEvent?.To ?? dailySchedule.From,
                 To = dailySchedule.To
             };
-            AddToList(openTimeBlocks, openTimeBlock);
+            AddToList(openTimeFrames, openTimeFrame);
 
-            return openTimeBlocks;
+            return openTimeFrames;
         }
 
         private void AddToList(
-            IList<ITimeBlock> openTimeBlocks,
-            ITimeBlock openTimeBlock)
+            IList<ITimeFrame> openTimeFrames,
+            ITimeFrame openTimeFrame)
         {
-            if (HasEnoughTime(openTimeBlock))
+            if (HasEnoughTime(openTimeFrame))
             {
-                openTimeBlocks.Add(openTimeBlock);
+                openTimeFrames.Add(openTimeFrame);
             }
         }
 
-        private bool HasEnoughTime(ITimeBlock openTimeBlock) =>
-            openTimeBlock.From.AddMinutes(MeetingTimeToBeResolvedInMinutes) <= openTimeBlock.To;
+        private bool HasEnoughTime(ITimeFrame openTimeFrame) =>
+            openTimeFrame.From.AddMinutes(MeetingTimeToBeResolvedInMinutes) <= openTimeFrame.To;
     }
 }

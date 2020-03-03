@@ -2,17 +2,17 @@ using System;
 
 namespace MeetingTimeFinder
 {
-    public class TimeBlock : ITimeBlock
+    public class TimeFrame : ITimeFrame
     {
         public DateTime From { get; set; }
         public DateTime To { get; set; }
 
-        public TimeBlock()
+        public TimeFrame()
         {
 
         }
 
-        public TimeBlock(string from, string to)
+        public TimeFrame(string from, string to)
         {
             const string timeFormat = "HH:mm";
 
@@ -31,7 +31,7 @@ namespace MeetingTimeFinder
             }
         }
 
-        public TimeBlock(DateTime from, DateTime to)
+        public TimeFrame(DateTime from, DateTime to)
         {
             From = from;
             To = to;
@@ -49,18 +49,18 @@ namespace MeetingTimeFinder
                 return false;
             }
 
-            TimeBlock timeBlock = obj as TimeBlock;
-            if (timeBlock == null)
+            TimeFrame timeFrame = obj as TimeFrame;
+            if (timeFrame == null)
             {
                 return false;
             }
             else
             {
-                return Equals(timeBlock);
+                return Equals(timeFrame);
             }
         }
 
-        public bool Equals(ITimeBlock other)
+        public bool Equals(ITimeFrame other)
         {
             if (other == null)
             {
@@ -70,7 +70,7 @@ namespace MeetingTimeFinder
             return From == other.From && To == other.To;
         }
 
-        public static bool operator ==(TimeBlock operand1, TimeBlock operand2)
+        public static bool operator ==(TimeFrame operand1, TimeFrame operand2)
         {
             if (operand1 as object == null || operand2 as object == null)
             {
@@ -80,7 +80,7 @@ namespace MeetingTimeFinder
             return operand1.Equals(operand2);
         }
 
-        public static bool operator !=(TimeBlock operand1, TimeBlock operand2)
+        public static bool operator !=(TimeFrame operand1, TimeFrame operand2)
         {
             if (operand1 as object == null || operand2 as object == null)
             {
@@ -90,51 +90,51 @@ namespace MeetingTimeFinder
             return !operand1.Equals(operand2);
         }
 
-        public static bool operator >=(TimeBlock timeBlock1, TimeBlock timeBlock2)
+        public static bool operator >=(TimeFrame timeFrame1, TimeFrame timeFrame2)
         {
-            if (timeBlock1 as object == null || timeBlock2 as object == null)
+            if (timeFrame1 as object == null || timeFrame2 as object == null)
             {
-                return Object.Equals(timeBlock1, timeBlock2);
+                return Object.Equals(timeFrame1, timeFrame2);
             }
 
-            return timeBlock1.From.TimeOfDay >= timeBlock2.To.TimeOfDay;
+            return timeFrame1.From.TimeOfDay >= timeFrame2.To.TimeOfDay;
         }
 
-        public static bool operator <=(TimeBlock timeBlock1, TimeBlock timeBlock2)
+        public static bool operator <=(TimeFrame timeFrame1, TimeFrame timeFrame2)
         {
-            if (timeBlock1 as object == null || timeBlock2 as object == null)
+            if (timeFrame1 as object == null || timeFrame2 as object == null)
             {
-                return Object.Equals(timeBlock1, timeBlock2);
+                return Object.Equals(timeFrame1, timeFrame2);
             }
 
-            return timeBlock1.To.TimeOfDay <= timeBlock2.From.TimeOfDay;
+            return timeFrame1.To.TimeOfDay <= timeFrame2.From.TimeOfDay;
         }
 
-        public static bool operator >(TimeBlock timeBlock1, TimeBlock timeBlock2)
+        public static bool operator >(TimeFrame timeFrame1, TimeFrame timeFrame2)
         {
-            if (timeBlock1 as object == null || timeBlock2 as object == null)
+            if (timeFrame1 as object == null || timeFrame2 as object == null)
             {
-                return Object.Equals(timeBlock1, timeBlock2);
+                return Object.Equals(timeFrame1, timeFrame2);
             }
 
-            return timeBlock1.From.TimeOfDay > timeBlock2.To.TimeOfDay;
+            return timeFrame1.From.TimeOfDay > timeFrame2.To.TimeOfDay;
         }
 
-        public static bool operator <(TimeBlock timeBlock1, TimeBlock timeBlock2)
+        public static bool operator <(TimeFrame timeFrame1, TimeFrame timeFrame2)
         {
-            if (timeBlock1 as object == null || timeBlock2 as object == null)
+            if (timeFrame1 as object == null || timeFrame2 as object == null)
             {
-                return Object.Equals(timeBlock1, timeBlock2);
+                return Object.Equals(timeFrame1, timeFrame2);
             }
 
-            return timeBlock1.To.TimeOfDay < timeBlock2.From.TimeOfDay;
+            return timeFrame1.To.TimeOfDay < timeFrame2.From.TimeOfDay;
         }
 
         public int CompareTo(object obj)
         {
             if (obj == null) return 1;
 
-            TimeBlock other = obj as TimeBlock;
+            TimeFrame other = obj as TimeFrame;
 
             if (other != null)
             {
@@ -154,11 +154,11 @@ namespace MeetingTimeFinder
             }
             else
             {
-                throw new ArgumentException("Object is not a TimeBlock");
+                throw new ArgumentException("Object is not a timeFrame");
             }
         }
 
-        public int CompareTo(ITimeBlock other)
+        public int CompareTo(ITimeFrame other)
         {
             if (other == null) return 1;
 

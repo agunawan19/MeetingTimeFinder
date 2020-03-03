@@ -4,6 +4,6 @@ namespace MeetingTimeFinder
 {
     public class DailyCalendar : IDailyCalendar
     {
-        public IList<ITimeBlock> CalendarEvents { get; set; } = new List<ITimeBlock>();
+        public IList<ITimeFrame> CalendarEvents { get; set; } = new List<ITimeFrame>();
     }
 }
