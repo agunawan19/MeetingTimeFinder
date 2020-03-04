@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using MeetingTimeFinder;
-using System.Linq;
 
 namespace MeetingTimeFinderApp
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             if (args.Length == 0)
             {
@@ -20,10 +19,11 @@ namespace MeetingTimeFinderApp
             var meetingTimeFinderManager = new MeetingTimeFinderManager(personDailyCalendars);
             meetingTimeFinderManager.MeetingTimeToBeResolvedInMinutes = int.Parse(args[0]);
             var result = meetingTimeFinderManager.FindPossibleMeetingTime();
+            const string timeFormat = "HH:mm";
 
             foreach (var t in result)
             {
-                Console.WriteLine($"{t.From.ToString("HH:mm")} - {t.To.ToString("HH:mm")}");
+                Console.WriteLine($"{t.From.ToString(timeFormat)} - {t.To.ToString(timeFormat)}");
             }
 
             Console.WriteLine("Press any key to continue...");
