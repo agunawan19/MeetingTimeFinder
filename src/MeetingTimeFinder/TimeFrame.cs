@@ -7,7 +7,9 @@ namespace MeetingTimeFinder
         public DateTime From { get; set; }
         public DateTime To { get; set; }
 
-        public TimeFrame() { }
+        public TimeFrame()
+        {
+        }
 
         public TimeFrame(string from, string to)
         {
@@ -33,43 +35,40 @@ namespace MeetingTimeFinder
         public override int GetHashCode() => new { From, To }.GetHashCode();
 
         public override bool Equals(object obj) =>
-            obj is TimeFrame otherTimeFrame ?
-            this == otherTimeFrame :
-            false;
+            obj is TimeFrame otherTimeFrame && this == otherTimeFrame;
 
         public bool Equals(ITimeFrame other) =>
-            other is ITimeFrame ?
-            (From, To) == (other.From, other.To) :
-            false;
+            other is ITimeFrame otherTimeFrame &&
+            (From, To) == (otherTimeFrame.From, otherTimeFrame.To);
 
         public static bool operator ==(TimeFrame operand1, TimeFrame operand2) =>
-            operand1 is TimeFrame && operand2 is TimeFrame ?
-            operand1.Equals(operand2) :
+            operand1 is TimeFrame timeFrame1 && operand2 is TimeFrame timeFrame2 ?
+            timeFrame1.Equals(timeFrame2) :
             Equals(operand1, operand2);
 
         public static bool operator !=(TimeFrame operand1, TimeFrame operand2) =>
-            operand1 is TimeFrame && operand2 is TimeFrame ?
-            !operand1.Equals(operand2) :
+            operand1 is TimeFrame timeFrame1 && operand2 is TimeFrame timeFrame2 ?
+            !timeFrame1.Equals(operand2) :
             !Equals(operand1, operand2);
 
         public static bool operator >=(TimeFrame operand1, TimeFrame operand2) =>
-            operand1 is TimeFrame && operand2 is TimeFrame ?
-            operand1.From.TimeOfDay >= operand2.To.TimeOfDay :
+            operand1 is TimeFrame timeFrame1 && operand2 is TimeFrame timeFrame2 ?
+            timeFrame1.From.TimeOfDay >= timeFrame2.To.TimeOfDay :
             Equals(operand1, operand2);
 
         public static bool operator <=(TimeFrame operand1, TimeFrame operand2) =>
-            operand1 is TimeFrame && operand2 is TimeFrame ?
-            operand1.To.TimeOfDay <= operand2.From.TimeOfDay :
+            operand1 is TimeFrame timeFrame1 && operand2 is TimeFrame timeFrame2 ?
+            timeFrame1.To.TimeOfDay <= timeFrame2.From.TimeOfDay :
             Equals(operand1, operand2);
 
         public static bool operator >(TimeFrame operand1, TimeFrame operand2) =>
-            operand1 is TimeFrame && operand2 is TimeFrame ?
-            operand1.From.TimeOfDay > operand2.To.TimeOfDay :
+            operand1 is TimeFrame timeFrame1 && operand2 is TimeFrame timeFrame2 ?
+            timeFrame1.From.TimeOfDay > timeFrame2.To.TimeOfDay :
             Equals(operand1, operand2);
 
         public static bool operator <(TimeFrame operand1, TimeFrame operand2) =>
-            operand1 is TimeFrame && operand2 is TimeFrame ?
-            operand1.To.TimeOfDay < operand2.From.TimeOfDay :
+            operand1 is TimeFrame timeFrame1 && operand2 is TimeFrame timeFrame2 ?
+            timeFrame1.To.TimeOfDay < timeFrame2.From.TimeOfDay :
             Equals(operand1, operand2);
 
         public int CompareTo(object obj)
@@ -85,7 +84,7 @@ namespace MeetingTimeFinder
 
             if (!Equals(obj))
             {
-                return From <= (obj as ITimeFrame).From ? -1 : 1;
+                return From <= ((ITimeFrame)obj).From ? -1 : 1;
             }
 
             return 0;
