@@ -25,39 +25,39 @@ namespace MeetingTimeFinder.Tests
         {
             var from = "09:00";
             var to = "20:00";
-            var TimeFrame = new TimeFrame(from, to);
+            var timeFrame = new TimeFrame(from, to);
 
             var expected = new TimeSpan(9, 0, 0);
-            var actual = TimeFrame.From.TimeOfDay;
+            var actual = timeFrame.From.TimeOfDay;
             Assert.Equal(expected, actual);
 
             expected = new TimeSpan(20, 0, 0);
-            Assert.Equal(expected, TimeFrame.To.TimeOfDay);
+            Assert.Equal(expected, timeFrame.To.TimeOfDay);
         }
 
         [Theory]
         [MemberData(nameof(EqualTimeFrameData))]
-        public void Equal_Operator_Returns_Correct_Boolean(TimeFrame TimeFrame1, TimeFrame TimeFrame2, bool expected)
+        public void Equal_Operator_Returns_Correct_Boolean(TimeFrame timeFrame1, TimeFrame timeFrame2, bool expected)
         {
-            var actual = TimeFrame1 == TimeFrame2;
+            var actual = timeFrame1 == timeFrame2;
 
             Assert.Equal(expected, actual);
         }
 
         [Theory]
         [MemberData(nameof(EqualTimeFrameData))]
-        public void Equal_Method_Returns_Correct_Boolean(TimeFrame TimeFrame1, TimeFrame TimeFrame2, bool expected)
+        public void Equal_Method_Returns_Correct_Boolean(TimeFrame timeFrame1, TimeFrame timeFrame2, bool expected)
         {
-            var actual = TimeFrame1.Equals(TimeFrame2);
+            var actual = timeFrame1.Equals(timeFrame2);
 
             Assert.Equal(expected, actual);
         }
 
         [Theory]
         [MemberData(nameof(EqualTimeFrameData))]
-        public void Equal_Object_Method_Returns_Correct_Boolean(ITimeFrame TimeFrame1, object TimeFrame2, bool expected)
+        public void Equal_Object_Method_Returns_Correct_Boolean(TimeFrame timeFrame1, object timeFrame2, bool expected)
         {
-            var actual = TimeFrame1.Equals(TimeFrame2);
+            var actual = timeFrame1.Equals(timeFrame2);
 
             Assert.Equal(expected, actual);
         }
@@ -93,9 +93,9 @@ namespace MeetingTimeFinder.Tests
 
         [Theory]
         [MemberData(nameof(NotEqualTimeFrameData))]
-        public void Not_Equal_Operator_Returns_Correct_Boolean(TimeFrame TimeFrame1, TimeFrame TimeFrame2, bool expected)
+        public void Not_Equal_Operator_Returns_Correct_Boolean(TimeFrame timeFrame1, TimeFrame timeFrame2, bool expected)
         {
-            var actual = TimeFrame1 != TimeFrame2;
+            var actual = timeFrame1 != timeFrame2;
 
             Assert.Equal(expected, actual);
         }
@@ -125,18 +125,18 @@ namespace MeetingTimeFinder.Tests
 
         [Theory]
         [MemberData(nameof(GreaterOrEqualThanTimeFrameData), parameters: new object[] { 0, 7 })]
-        public void GreaterOrEqualThan_Operator_Returns_Correct_Boolean(TimeFrame TimeFrame1, TimeFrame TimeFrame2, bool expected)
+        public void GreaterOrEqualThan_Operator_Returns_Correct_Boolean(TimeFrame timeFrame1, TimeFrame timeFrame2, bool expected)
         {
-            var actual = TimeFrame1 >= TimeFrame2;
+            var actual = timeFrame1 >= timeFrame2;
 
             Assert.Equal(expected, actual);
         }
 
         [Theory]
         [MemberData(nameof(GreaterOrEqualThanTimeFrameData), parameters: new object[] { 1, 6 })]
-        public void GreaterThan_Operator_Returns_Correct_Boolean(TimeFrame TimeFrame1, TimeFrame TimeFrame2, bool expected)
+        public void GreaterThan_Operator_Returns_Correct_Boolean(TimeFrame timeFrame1, TimeFrame timeFrame2, bool expected)
         {
-            var actual = TimeFrame1 > TimeFrame2;
+            var actual = timeFrame1 > timeFrame2;
 
             Assert.Equal(expected, actual);
         }
@@ -195,18 +195,18 @@ namespace MeetingTimeFinder.Tests
 
         [Theory]
         [MemberData(nameof(LessOrEqualThanTimeFrameData), parameters: new object[] { 0, 5 })]
-        public void LessOrEqualThan_Operator_Returns_Correct_Boolean(TimeFrame TimeFrame1, TimeFrame TimeFrame2, bool expected)
+        public void LessOrEqualThan_Operator_Returns_Correct_Boolean(TimeFrame timeFrame1, TimeFrame timeFrame2, bool expected)
         {
-            var actual = TimeFrame1 <= TimeFrame2;
+            var actual = timeFrame1 <= timeFrame2;
 
             Assert.Equal(expected, actual);
         }
 
         [Theory]
         [MemberData(nameof(LessOrEqualThanTimeFrameData), parameters: new object[] { 1, 4 })]
-        public void LessThan_Operator_Returns_Correct_Boolean(TimeFrame TimeFrame1, TimeFrame TimeFrame2, bool expected)
+        public void LessThan_Operator_Returns_Correct_Boolean(TimeFrame timeFrame1, TimeFrame timeFrame2, bool expected)
         {
-            var actual = TimeFrame1 < TimeFrame2;
+            var actual = timeFrame1 < timeFrame2;
 
             Assert.Equal(expected, actual);
         }
