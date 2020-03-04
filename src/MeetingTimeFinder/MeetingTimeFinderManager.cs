@@ -8,7 +8,9 @@ namespace MeetingTimeFinder
         public IList<PersonDailyCalendar> PersonDailyCalendars { get; set; } = new List<PersonDailyCalendar>();
         public int MeetingTimeToBeResolvedInMinutes { get; set; } = 30;
 
-        public MeetingTimeFinderManager() { }
+        public MeetingTimeFinderManager()
+        {
+        }
 
         public MeetingTimeFinderManager(IList<PersonDailyCalendar> personDailyCalendars) =>
             PersonDailyCalendars = personDailyCalendars;
@@ -85,8 +87,7 @@ namespace MeetingTimeFinder
 
             return openTimeFrames;
 
-
-            void AddToList(List<ITimeFrame> openTimeList, ITimeFrame openTimeItem)
+            void AddToList(ICollection<ITimeFrame> openTimeList, ITimeFrame openTimeItem)
             {
                 if (HasEnoughTime(openTimeItem))
                 {
