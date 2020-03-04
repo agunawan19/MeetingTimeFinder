@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using MeetingTimeFinder;
 using System.Linq;
@@ -9,6 +9,16 @@ namespace MeetingTimeFinderApp
     {
         static void Main(string[] args)
         {
+            string date1 = "2001-01-01";
+            object date2 = "";
+            var dateCompareResult = date1.Equals(date2);
+
+            ITimeFrame test1 = new TimeFrame("08:00", "10:00");
+            object test2 = "";
+            //object test2 = new string[] { "A", "B" };
+            var testResult = test1.Equals(test2);
+          
+
             if (args.Length == 0)
             {
                 Console.WriteLine("Please enter a numeric argument.");

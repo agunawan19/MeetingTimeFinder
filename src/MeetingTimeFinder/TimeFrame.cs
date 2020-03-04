@@ -7,10 +7,7 @@ namespace MeetingTimeFinder
         public DateTime From { get; set; }
         public DateTime To { get; set; }
 
-        public TimeFrame()
-        {
-
-        }
+        public TimeFrame() { }
 
         public TimeFrame(string from, string to)
         {
@@ -31,147 +28,76 @@ namespace MeetingTimeFinder
             }
         }
 
-        public TimeFrame(DateTime from, DateTime to)
-        {
-            From = from;
-            To = to;
-        }
+        public TimeFrame(DateTime from, DateTime to) => (From, To) = (from, to);
 
-        public override int GetHashCode()
-        {
-            return new { From, To }.GetHashCode();
-        }
+        public override int GetHashCode() => new { From, To }.GetHashCode();
 
-        public override bool Equals(object obj)
-        {
-            if (obj == null)
-            {
-                return false;
-            }
+        public override bool Equals(object obj) =>
+            obj is TimeFrame otherTimeFrame ?
+            this == otherTimeFrame :
+            false;
 
-            TimeFrame timeFrame = obj as TimeFrame;
-            if (timeFrame == null)
-            {
-                return false;
-            }
-            else
-            {
-                return Equals(timeFrame);
-            }
-        }
+        public bool Equals(ITimeFrame other) =>
+            other is ITimeFrame ?
+            (From, To) == (other.From, other.To) :
+            false;
 
-        public bool Equals(ITimeFrame other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
+        public static bool operator ==(TimeFrame operand1, TimeFrame operand2) =>
+            operand1 is TimeFrame && operand2 is TimeFrame ?
+            operand1.Equals(operand2) :
+            Equals(operand1, operand2);
 
-            return From == other.From && To == other.To;
-        }
+        public static bool operator !=(TimeFrame operand1, TimeFrame operand2) =>
+            operand1 is TimeFrame && operand2 is TimeFrame ?
+            !operand1.Equals(operand2) :
+            !Equals(operand1, operand2);
 
-        public static bool operator ==(TimeFrame operand1, TimeFrame operand2)
-        {
-            if (operand1 as object == null || operand2 as object == null)
-            {
-                return Object.Equals(operand1, operand2);
-            }
+        public static bool operator >=(TimeFrame operand1, TimeFrame operand2) =>
+            operand1 is TimeFrame && operand2 is TimeFrame ?
+            operand1.From.TimeOfDay >= operand2.To.TimeOfDay :
+            Equals(operand1, operand2);
 
-            return operand1.Equals(operand2);
-        }
+        public static bool operator <=(TimeFrame operand1, TimeFrame operand2) =>
+            operand1 is TimeFrame && operand2 is TimeFrame ?
+            operand1.To.TimeOfDay <= operand2.From.TimeOfDay :
+            Equals(operand1, operand2);
 
-        public static bool operator !=(TimeFrame operand1, TimeFrame operand2)
-        {
-            if (operand1 as object == null || operand2 as object == null)
-            {
-                return !Object.Equals(operand1, operand2);
-            }
+        public static bool operator >(TimeFrame operand1, TimeFrame operand2) =>
+            operand1 is TimeFrame && operand2 is TimeFrame ?
+            operand1.From.TimeOfDay > operand2.To.TimeOfDay :
+            Equals(operand1, operand2);
 
-            return !operand1.Equals(operand2);
-        }
-
-        public static bool operator >=(TimeFrame timeFrame1, TimeFrame timeFrame2)
-        {
-            if (timeFrame1 as object == null || timeFrame2 as object == null)
-            {
-                return Object.Equals(timeFrame1, timeFrame2);
-            }
-
-            return timeFrame1.From.TimeOfDay >= timeFrame2.To.TimeOfDay;
-        }
-
-        public static bool operator <=(TimeFrame timeFrame1, TimeFrame timeFrame2)
-        {
-            if (timeFrame1 as object == null || timeFrame2 as object == null)
-            {
-                return Object.Equals(timeFrame1, timeFrame2);
-            }
-
-            return timeFrame1.To.TimeOfDay <= timeFrame2.From.TimeOfDay;
-        }
-
-        public static bool operator >(TimeFrame timeFrame1, TimeFrame timeFrame2)
-        {
-            if (timeFrame1 as object == null || timeFrame2 as object == null)
-            {
-                return Object.Equals(timeFrame1, timeFrame2);
-            }
-
-            return timeFrame1.From.TimeOfDay > timeFrame2.To.TimeOfDay;
-        }
-
-        public static bool operator <(TimeFrame timeFrame1, TimeFrame timeFrame2)
-        {
-            if (timeFrame1 as object == null || timeFrame2 as object == null)
-            {
-                return Object.Equals(timeFrame1, timeFrame2);
-            }
-
-            return timeFrame1.To.TimeOfDay < timeFrame2.From.TimeOfDay;
-        }
+        public static bool operator <(TimeFrame operand1, TimeFrame operand2) =>
+            operand1 is TimeFrame && operand2 is TimeFrame ?
+            operand1.To.TimeOfDay < operand2.From.TimeOfDay :
+            Equals(operand1, operand2);
 
         public int CompareTo(object obj)
         {
-            if (obj == null) return 1;
+            if (obj is null) return 1;
 
-            TimeFrame other = obj as TimeFrame;
-
-            if (other != null)
+            if (!(obj is TimeFrame))
             {
-                if (From != other.From || To != other.To)
-                {
-                    if (From <= other.From)
-                    {
-                        return -1;
-                    }
-                    else
-                    {
-                        return 1;
-                    }
-                }
+                throw new ArgumentException(
+                    paramName: nameof(obj),
+                    message: $"Object must be of type {typeof(TimeFrame).Name}.");
+            }
 
-                return 0;
-            }
-            else
+            if (!Equals(obj))
             {
-                throw new ArgumentException("Object is not a timeFrame");
+                return From <= (obj as ITimeFrame).From ? -1 : 1;
             }
+
+            return 0;
         }
 
         public int CompareTo(ITimeFrame other)
         {
-            if (other == null) return 1;
+            if (other is null) return 1;
 
-            if (From != other.From || To != other.To)
+            if (!Equals(other))
             {
-                if (From <= other.From)
-                {
-                    return -1;
-                }
-                else
-                {
-                    return 1;
-                }
+                return From <= other.From ? -1 : 1;
             }
 
             return 0;

@@ -55,7 +55,7 @@ namespace MeetingTimeFinder.Tests
 
         [Theory]
         [MemberData(nameof(EqualTimeFrameData))]
-        public void Equal_Object_Method_Returns_Correct_Boolean(object TimeFrame1, object TimeFrame2, bool expected)
+        public void Equal_Object_Method_Returns_Correct_Boolean(ITimeFrame TimeFrame1, object TimeFrame2, bool expected)
         {
             var actual = TimeFrame1.Equals(TimeFrame2);
 
@@ -268,6 +268,38 @@ namespace MeetingTimeFinder.Tests
 
             Assert.Equal(expected, TimeFrame1.CompareTo(TimeFrame2));
         }
+
+        [Theory]
+        [InlineData(new[] { "01:00", "09:00" }, new[] { "09:00", "20:00" }, -1)]
+        [InlineData(new[] { "02:00", "22:00" }, new[] { "09:00", "20:00" }, -1)]
+        [InlineData(new[] { "01:00", "09:00" }, new[] { "02:00", "22:00" }, -1)]
+        [InlineData(new[] { "03:00", "20:00" }, new[] { "09:00", "20:00" }, -1)]
+        [InlineData(new[] { "09:00", "10:00" }, new[] { "09:00", "20:00" }, -1)]
+        [InlineData(new[] { "09:00", "20:00" }, new[] { "09:00", "20:00" }, 0)]
+        [InlineData(new[] { "10:00", "20:00" }, new[] { "09:00", "20:00" }, 1)]
+        [InlineData(new[] { "10:00", "21:00" }, new[] { "09:00", "20:00" }, 1)]
+        public void CompareTo_Object_Returns_Correct_Result(IList<string> fromTo1, IList<string> fromTo2, int expected)
+        {
+            var TimeFrame1 = new TimeFrame(fromTo1[0], fromTo1[1]);
+            var TimeFrame2 = new TimeFrame(fromTo2[0], fromTo2[1]);
+
+            Assert.Equal(expected, TimeFrame1.CompareTo(TimeFrame2 as object));
+        }
+
+        [Fact]
+        public void CompareTo_Object_Throws_ArgumentException()
+        {
+            var timeFrame1 = new TimeFrame("08:00", "09:00");
+            string timeFrame2 = "08:00 - 09:00";
+
+            Exception ex = Assert.Throws<ArgumentException>(() => timeFrame1.CompareTo(timeFrame2));
+            var expected = "Object must be of type TimeFrame. (Parameter 'obj')";
+            var actual = ex.Message;
+
+            Assert.Equal(expected, actual);
+
+        }
+
 
         [Theory]
         [MemberData(nameof(CompareToListSortBlockData))]

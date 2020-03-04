@@ -8,10 +8,7 @@ namespace MeetingTimeFinder
         public IList<PersonDailyCalendar> PersonDailyCalendars { get; set; } = new List<PersonDailyCalendar>();
         public int MeetingTimeToBeResolvedInMinutes { get; set; } = 30;
 
-        public MeetingTimeFinderManager()
-        {
-
-        }
+        public MeetingTimeFinderManager() { }
 
         public MeetingTimeFinderManager(IList<PersonDailyCalendar> personDailyCalendars) =>
             PersonDailyCalendars = personDailyCalendars;
@@ -41,14 +38,14 @@ namespace MeetingTimeFinder
             }
 
             return possibleMeetingTimes;
-        }
 
-        private ITimeFrame GetIntersectedTimeFrame(ITimeFrame reference, ITimeFrame other) =>
-            new TimeFrame
-            {
-                From = reference.From.CompareTo(other.From) == -1 ? other.From : reference.From,
-                To = reference.To.CompareTo(other.To) == -1 ? reference.To : other.To
-            };
+            ITimeFrame GetIntersectedTimeFrame(ITimeFrame reference, ITimeFrame other) =>
+                new TimeFrame
+                {
+                    From = reference.From.CompareTo(other.From) == -1 ? other.From : reference.From,
+                    To = reference.To.CompareTo(other.To) == -1 ? reference.To : other.To
+                };
+        }
 
         public IEnumerable<ITimeFrame> GetOpenTimeFrames(PersonDailyCalendar personDailyCalendar)
         {
@@ -87,15 +84,14 @@ namespace MeetingTimeFinder
             AddToList(openTimeFrames, openTimeFrame);
 
             return openTimeFrames;
-        }
 
-        private void AddToList(
-            IList<ITimeFrame> openTimeFrames,
-            ITimeFrame openTimeFrame)
-        {
-            if (HasEnoughTime(openTimeFrame))
+
+            void AddToList(List<ITimeFrame> openTimeList, ITimeFrame openTimeItem)
             {
-                openTimeFrames.Add(openTimeFrame);
+                if (HasEnoughTime(openTimeItem))
+                {
+                    openTimeList.Add(openTimeItem);
+                }
             }
         }
 
