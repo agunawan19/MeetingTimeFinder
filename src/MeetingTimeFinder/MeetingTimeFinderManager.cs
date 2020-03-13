@@ -27,7 +27,7 @@ namespace MeetingTimeFinder
             {
                 foreach (var openTimeFrame2 in openTimeFrames2)
                 {
-                    if (openTimeFrame1.IntersecWith(openTimeFrame2))
+                    if (openTimeFrame1.IntersectWith(openTimeFrame2))
                     {
                         var intersectedTimeFrame = GetIntersectedTimeFrame(openTimeFrame1, openTimeFrame2);
 

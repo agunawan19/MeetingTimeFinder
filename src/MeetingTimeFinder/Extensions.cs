@@ -4,52 +4,50 @@ namespace MeetingTimeFinder
 {
     public static class Extensions
     {
-        public static bool IntersecWith(this ITimeFrame reference, ITimeFrame other) =>
+        public static bool IntersectWith(this ITimeFrame reference, ITimeFrame other) =>
             reference.From < other.To && reference.To > other.From;
 
         public static int[] GetPivotPoints(int[] arr)
         {
-            var pivotPoints = new List<int>();
+            var pivotIndexes = new List<int>();
+
+            if (arr.Length == 1)
+            {
+                pivotIndexes.Add(0);
+                return pivotIndexes.ToArray();
+            }
 
             if (arr.Length < 3)
             {
-                pivotPoints.Add(-1);
-                return pivotPoints.ToArray();
+                pivotIndexes.Add(-1);
+                return pivotIndexes.ToArray();
             }
 
-            for (int removedNumber = 0; removedNumber < arr.Length; removedNumber++)
+            var leftSum = 0;
+            var rightSum = 0;
+
+            for (int i = 1; i < arr.Length; i++)
             {
-                var leftSum = 0;
-                var rightSum = 0;
+                rightSum += arr[i];
+            }
 
-                for (int i = 1; i < arr.Length - removedNumber; i++)
+            for (int i = 0, j = 1; j < arr.Length; i++, j++)
+            {
+                rightSum -= arr[j];
+                leftSum += arr[i];
+
+                if (leftSum == rightSum)
                 {
-                    rightSum += arr[i];
-                }
-
-                for (int i = 0, j = 1; j < arr.Length - removedNumber; i++, j++)
-                {
-                    rightSum -= arr[j];
-                    leftSum += arr[i];
-
-                    if (leftSum == rightSum)
-                    {
-                        pivotPoints.Add(arr[i + 1]);
-                    }
+                    pivotIndexes.Add(j);
                 }
             }
 
-            if (pivotPoints.Count == 0)
+            if (pivotIndexes.Count == 0)
             {
-                pivotPoints.Add(-1);
+                pivotIndexes.Add(-1);
             }
 
-            if (pivotPoints.Count > 1)
-            {
-                pivotPoints.Reverse();
-            }
-
-            return pivotPoints.ToArray();
+            return pivotIndexes.ToArray();
         }
     }
 }

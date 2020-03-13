@@ -366,7 +366,7 @@ namespace MeetingTimeFinder.Tests
             const byte from = 0;
             const byte to = 1;
             var actual = new TimeFrame(fromToPair1[from], fromToPair1[to])
-                .IntersecWith(new TimeFrame(fromToPair2[from], fromToPair2[to]));
+                .IntersectWith(new TimeFrame(fromToPair2[from], fromToPair2[to]));
 
             Assert.Equal(expected, actual);
         }
